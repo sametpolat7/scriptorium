@@ -1,0 +1,10 @@
+<% flash.each do |type, message| %>
+  <div class="text-center mt-8">
+    <div class="alert text-2xl font-medium alert-<%= type %> alert-dismissible" data-controller="flash">
+      <%= message %>
+      <button class="bg-gray-50 border px-2 rounded-full hover:border-gray-200 close-button" type="button" data-action="click->flash#close" aria-label="Close">
+        x
+      </button>
+    </div>
+  </div>
+<% end %>

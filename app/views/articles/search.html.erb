@@ -1,0 +1,63 @@
+<div class="mt-16 min-h-screen">
+  <% if @search_results.any? %>
+    <h2 class="mb-12 text-4xl font-medium">
+    <%= pluralize(@search_results.size, t("result")) + " " + t("found")%>
+    </h2>
+    <% @search_results.each do |article| %>
+      <div class="flex flex-col justify-between w-full h-72 mb-8 border rounded-lg p-6">
+        <div class="truncate">
+
+          <div>
+            <a href="<%= user_path(article.user.username) %>" class="flex items-center">
+              <span>
+                <%= image_tag("avatar.png", size: "20x20", :alt => "avatar") %>
+              </span>
+              <span class="text-sm font-semibold ml-2">
+                <%= article.user.username %>
+              </span>
+            </a>
+          </div>
+
+          <h2 class="text-xl font-medium mt-4"><%= article.title %></h2>
+          <p class="mt-2"><%= article.content %></p>
+          <ul class="font-medium mt-4">
+            <% article.tags.each do |tag| %>
+              <li class="inline-block text-blue-900 hover:text-blue-500">
+                <%= link_to "##{tag.name}", search_path(query: tag.name), class: "text-blue-900 hover:text-blue-500"
+                %>
+              </li>
+            <% end %>
+          </ul>
+          <p class="flex items-center mt-6 text-sm font-medium">
+            <span class="flex items-center mr-4">
+              <%= image_tag "like.svg", alt: "Like_Button" %>
+              &nbsp;
+              <%= pluralize(article.like_count, t("like")) %>
+            </span>
+            <span class="flex items-center">
+              <%= image_tag "comment.svg", alt: "Comment_Button" %>
+              &nbsp;
+              <%= pluralize(article.comments.select { |comment| comment.status == 'approved' }.length, t("comment"))
+              %>
+            </span>
+          </p>
+
+        </div>
+
+        <div class="flex justify-between items-center">
+          <p class="text-gray-500 text-sm">
+            <%=t("posted") + ":" + " " + time_ago_in_words(article.created_at) + " " + t("ago") %>
+          </p>
+          <%= link_to t("explore_more"), article_path(article),
+            class: "px-4 py-2 bg-yellow-400 rounded hover:bg-yellow-200 cursor-pointer"
+          %>
+        </div>
+
+      </div>
+    <% end %>
+  <% else %>
+    <h2 class="mt-16 text-4xl font-medium text-center">
+      <%= t("no_result") %>
+    </h2>
+  <% end %>
+</div>

@@ -1,0 +1,63 @@
+tr:
+  devise:
+    confirmations:
+      confirmed: "E-posta adresiniz başarıyla onaylandı."
+      send_instructions: "E-posta adresinizi nasıl onaylayacağınıza dair talimatları birkaç dakika içinde alacaksınız."
+      send_paranoid_instructions: "Eğer e-posta adresiniz veritabanımızda varsa, e-posta adresinizi nasıl onaylayacağınıza dair talimatları birkaç dakika içinde alacaksınız."
+    failure:
+      already_authenticated: "Zaten oturum açmış durumdasınız."
+      inactive: "Hesabınız henüz etkinleştirilmemiş."
+      invalid: "Geçersiz %{authentication_keys} veya şifre."
+      locked: "Hesabınız kilitlendi."
+      last_attempt: "Hesabınız kilitlenmeden önce bir deneme hakkınız kaldı."
+      not_found_in_database: "Geçersiz %{authentication_keys} veya şifre."
+      timeout: "Oturumunuzun süresi doldu. Devam etmek için lütfen tekrar oturum açın."
+      unauthenticated: "Devam etmeden önce oturum açmanız veya kayıt olmanız gerekmektedir."
+      unconfirmed: "Devam etmeden önce e-posta adresinizi onaylamanız gerekmektedir."
+    mailer:
+      confirmation_instructions:
+        subject: "Onay talimatları"
+      reset_password_instructions:
+        subject: "Şifre sıfırlama talimatları"
+      unlock_instructions:
+        subject: "Kilit açma talimatları"
+      email_changed:
+        subject: "E-posta Adresi Değiştirildi"
+      password_change:
+        subject: "Şifre Değiştirildi"
+    omniauth_callbacks:
+      failure: "%{kind} hesabınızdan \"%{reason}\" nedeniyle kimlik doğrulaması yapılamadı."
+      success: "%{kind} hesabınızdan başarıyla kimlik doğrulandı."
+    passwords:
+      no_token: "Şifre sıfırlama e-postasından gelmeden bu sayfaya erişemezsiniz. Şifre sıfırlama e-postasından geliyorsanız, lütfen sağlanan tam URL'yi kullandığınızdan emin olun."
+      send_instructions: "Şifrenizi nasıl sıfırlayacağınıza dair talimatları birkaç dakika içinde alacaksınız."
+      send_paranoid_instructions: "Eğer e-posta adresiniz veritabanımızda varsa, birkaç dakika içinde e-posta adresinize şifre sıfırlama bağlantısı alacaksınız."
+      updated: "Şifreniz başarıyla değiştirildi. Şu anda oturum açmış durumdasınız."
+      updated_not_active: "Şifreniz başarıyla değiştirildi."
+    registrations:
+      destroyed: "Güle güle! Hesabınız başarıyla iptal edildi. Sizi tekrar görmeyi umuyoruz."
+      signed_up: "Hoş geldiniz! Başarıyla kaydoldunuz."
+      signed_up_but_inactive: "Başarıyla kaydoldunuz. Ancak hesabınız henüz etkinleştirilmediği için sizi oturum açamıyoruz."
+      signed_up_but_locked: "Başarıyla kaydoldunuz. Ancak hesabınız kilitlendiği için sizi oturum açamıyoruz."
+      signed_up_but_unconfirmed: "E-posta adresinize bir onay bağlantısı içeren bir mesaj gönderildi. Lütfen hesabınızı etkinleştirmek için bağlantıyı takip edin."
+      update_needs_confirmation: "Hesabınızı başarıyla güncellediniz, ancak yeni e-posta adresinizi doğrulamamız gerekiyor. Lütfen e-postanızı kontrol edin ve yeni e-posta adresinizi doğrulama bağlantısını takip edin."
+      updated: "Hesabınız başarıyla güncellendi."
+      updated_but_not_signed_in: "Hesabınız başarıyla güncellendi, ancak şifreniz değiştirildiği için tekrar oturum açmanız gerekiyor."
+    sessions:
+      signed_in: "Başarıyla oturum açıldı."
+      signed_out: "Başarıyla oturum kapatıldı."
+      already_signed_out: "Zaten oturum kapatıldı."
+    unlocks:
+      send_instructions: "Hesabınızı nasıl kilitleyeceğinize dair talimatları birkaç dakika içinde alacaksınız."
+      send_paranoid_instructions: "Eğer hesabınız varsa, birkaç dakika içinde nasıl kilitleyeceğinize dair talimatlar içeren bir e-posta alacaksınız."
+      unlocked: "Hesabınız başarıyla kilidi açıldı. Devam etmek için lütfen oturum açın."
+  errors:
+    messages:
+      already_confirmed: "zaten onaylandı, lütfen oturum açmayı deneyin"
+      confirmation_period_expired: "onaylanması gerekiyor %{period} içinde, lütfen yeni bir tane isteyin"
+      expired: "süresi dolmuş, lütfen yeni bir tane isteyin"
+      not_found: "bulunamadı"
+      not_locked: "kilitli değildi"
+      not_saved:
+        one: "Bu %{resource} kaydedilirken 1 hata oluştu:"
+        other: "Bu %{resource} kaydedilirken %{count} hata oluştu:"

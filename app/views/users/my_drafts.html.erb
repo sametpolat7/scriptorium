@@ -1,0 +1,63 @@
+<div class="flex flex-col items-center min-h-screen">
+  <h2 class="text-5xl font-semibold mt-12 mb-16">
+    <%= t("my_drafts") %>
+  </h2>
+
+  <% if @user_drafts.any? %>
+    <% @user_drafts.each do |article| %>
+
+        <div class="flex flex-col justify-between w-2/3 h-72 mb-8 border rounded-lg p-6">
+          <div class="truncate">
+
+            <div>
+              <a href="<%= user_path(article.user.username) %>" class="flex items-center">
+                <span>
+                  <%= image_tag("avatar.png", size: "20x20", :alt => "avatar") %>
+                </span>
+                <span class="text-sm font-semibold ml-2">
+                  <%= article.user.username %>
+                </span>
+              </a>
+            </div>
+
+            <h2 class="text-xl font-medium mt-4"><%= article.title %></h2>
+            <p class="mt-2"><%= article.content %></p>
+            <ul class="font-medium mt-4">
+              <% article.tags.each do |tag| %>
+                <li class="inline-block text-blue-900 hover:text-blue-500">
+                  <%= link_to "##{tag.name}", search_path(query: tag.name), class: "text-blue-900 hover:text-blue-500"
+                  %>
+                </li>
+              <% end %>
+            </ul>
+            <p class="mt-8">
+              <span class="font-medium">
+                Status:
+              </span>
+              <span class="font-bold">
+                <%= article.published ? t("published") : t("unpublished") %>
+              </span>
+            </p>
+
+          </div>
+
+          <div class="flex justify-between items-center">
+            <p class="text-gray-500 text-sm">
+              <%=t("posted") + ":" + " " + time_ago_in_words(article.created_at) + " " + t("ago") %>
+            </p>
+            <div>
+              <%= link_to t("edit"), edit_article_path(article),
+                class: "px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 cursor-pointer"
+              %>
+            </div>
+          </div>
+
+        </div>
+
+    <% end %>
+  <% else %>
+    <p class="text-2xl mt-8 font-medium">
+      <%= t("no_drafts") %>
+    </p>
+  <% end %>
+</div>

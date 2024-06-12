@@ -1,0 +1,75 @@
+<div class="flex flex-col items-center h-full">
+  <div class="flex flex-col justify-between h-1/2 w-full">
+    <div class="text-center mt-24 mb-48">
+      <h1>
+        <span class="text-3xl" >
+          <%= t("step_into") %>
+        </span>
+        &nbsp
+        <span class="text-6xl font-bold font-serif">Scriptorium.</span>
+      </h1>
+      <br>
+      <h2 class="text-xl italic text-center">
+        <%= t("slogan") %>
+      </h2>
+    </div>
+    <h2 class="text-2xl font-semibold ml-28 mb-4">
+      <%= t("recent_articles") %>
+    </h2>
+  </div>
+
+  <div class="flex flex-col w-5/6 h-1/2">
+    <% if @published_articles.any? %>
+      <% @published_articles.each do |article| %>
+        <div class="p-4 border-2 shadow mb-4 rounded-lg hover:border-yellow-300">
+          <a href="<%= user_path(article.user.username) %>" class="flex items-center">
+            <span>
+              <%= image_tag("avatar.png", size: "20x20", :alt => "avatar") %>
+            </span>
+            <span class="text-sm font-semibold ml-2">
+              <%= article.user.username %>
+            </span>
+          </a>
+          <div class="p-6">
+            <%= link_to article.title, article_path(article),
+              class: "text-xl font-semibold"
+            %>
+            <ul class="font-medium mt-4">
+              <% article.tags.each do |tag| %>
+                <li class="inline-block text-blue-900 hover:text-blue-500">
+                  <%= link_to "##{tag.name}", search_path(query: tag.name), class: "text-blue-900 hover:text-blue-500"
+                  %>
+                </li>
+              <% end %>
+            </ul>
+          </div>
+          <div class="flex justify-between px-6">
+            <p class="flex items-center">
+              <%= image_tag "like.svg", alt: "Like_Button" %>
+              <span class="ml-1 text-sm font-medium mr-4">
+                <%= pluralize(article.like_count, t("like") ) %>
+              </span>
+              <%= image_tag "comment.svg", alt: "Comment_Button" %>
+              <span class="ml-1 text-sm font-medium">
+                <%= pluralize(article.comments.select { |comment| comment.status == 'approved' }.length, t("comment") )
+                %>
+              </span>
+            </p>
+            <p class="text-gray-500 text-sm mt-2">
+              <%=t("posted") + ":" + " " + time_ago_in_words(article.created_at) + " " + t("ago") %>
+            </p>
+          </div>
+        </div>
+      <% end %>
+    <% else %>
+      <p class="text-gray-500">
+        <%= t("no_articles") %>
+      </p>
+    <% end %>
+  </div>
+    <div class="mx-auto w-1/6 mt-16">
+    <%= link_to t("see_all"), articles_path,
+      class: "text-2xl font-bold border-2 border-blue-950 px-4 py-2 text-blue-950 text-center hover:border-blue-700 hover:text-blue-700"
+    %>
+  </div>
+</div>

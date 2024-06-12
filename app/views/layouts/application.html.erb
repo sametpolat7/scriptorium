@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Scriptorium</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+    <%= favicon_link_tag 'favicon.ico' %>
+  </head>
+
+  <body class="overflow-x-hidden w-screen">
+    <%= render 'shared/navbar' %>
+    <%= render 'shared/flash' %>
+    <main class="container mx-auto w-11/12 h-full">
+      <%= yield %>
+    </main>
+    <%= render 'shared/footer' %>
+  </body>
+</html>

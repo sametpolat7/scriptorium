@@ -1,0 +1,133 @@
+<div class="flex flex-col justify-between min-h-screen">
+
+  <div class="border shadow-md p-8 mt-12 rounded-xl">
+    <a href="<%= user_path(@article.user.username) %>" class="flex items-center">
+      <span>
+        <%= image_tag("avatar.png", size: "30x30", :alt => "avatar") %>
+      </span>
+      <span class="font-semibold ml-2">
+        <%= @article.user.username %>
+      </span>
+    </a>
+    <h1 class="text-4xl mt-6 mb-8"><%= (@article.title) %></h1>
+    <div class="mb-12"><%= @article.content %></div>
+    <ul class="font-medium mt-4">
+      <% @article.tags.each do |tag| %>
+        <li class="inline-block text-blue-900 hover:text-blue-500">
+          <%= link_to "##{tag.name}", search_path(query: tag.name), class: "text-blue-900 hover:text-blue-500"
+          %>
+        </li>
+      <% end %>
+      </ul>
+    <p class="text-gray-500 text-sm mb-4">
+      <%=t("posted") + ":" + " " + time_ago_in_words(@article.created_at) + " " + t("ago") %>
+    </p>
+    <% if user_signed_in? && current_user == @article.user %>
+      <div class="flex justify-between mt-16">
+        <p class="text-lg font-medium">
+          <% if @article.published %>
+            <%= t("status") + t("published") %>
+          <% else %>
+            Unpublished
+          <% end %>
+        </p>
+        <div class="flex items-center">
+          <%= link_to t("edit"), edit_article_path(@article),
+            class: "px-8 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 cursor-pointer" 
+          %>
+          <%= button_to t("delete"), article_path(@article), method: :delete,
+            class: "px-8 py-1 bg-red-500 text-white rounded hover:bg-red-600 cursor-pointer ml-8"
+          %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="flex justify-between">
+    <div class="flex flex-col mt-12 px-16 w-1/2">
+      <div class="w-full">
+
+        <div class="flex">
+          <span>
+            <%= button_to increment_like_count_article_path(@article), method: :put do %>
+              <%= image_tag "like.svg", alt: "Like_Button" %>
+            <% end %>
+          </span>
+          <span class="italic text-base font-semibold ml-4">
+            <% if @article.like_count == 0 %>
+              <%= t("no_like") %>
+            <% else %>
+              <%= pluralize(@article.like_count, t("like")) %>
+            <% end %>
+          </span>
+        </div>
+
+        <div class="px-10 py-4">
+          <% if @approved_comments.length == 0 %>
+            <p class="mb-8">
+              <%= t("no_comment") %>
+            </p>
+          <% else %>
+            <% @approved_comments.each do |comment| %>
+              <div class="flex justify-between items-center">
+                <p class="w-2/3">
+                  <span class="text-sm font-semibold">
+                    <%= comment.user.username %>:
+                  </span>
+                  <span class="text-sm">
+                    <%= comment.content %>
+                  </span>
+                </p>
+                <p class="text-gray-500 text-sm">
+                  <%= time_ago_in_words(comment.created_at) + " " + t("ago")%>
+                </p>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+
+      </div>
+      
+      <div class="flex flex-col ml-10 mt-24">
+        <% if user_signed_in? %>
+          <h3 class="text-xl font-medium mb-4 w-1/2 italic">
+            <%= t("leave_comment") %>
+          </h3>
+          <%= form_with(model: [@article, Comment.new],
+            url: article_comments_path(@article), local: true) do |form| 
+          %>
+          <div class="field">
+            <%= form.text_area :content, placeholder: t("comment_placeholder") %>
+          </div>
+          <button class="actions mt-4 px-8 py-1 bg-green-500 text-white rounded hover:bg-green-600 cursor-pointer">
+            <%= form.submit t("submit"), class: "cursor-pointer" %>
+          </button>
+          <% end %>
+        <%end%>
+      </div>
+    </div>
+
+    <div class="mt-12 text-gray-500 w-1/2 text-end">
+      <% if user_signed_in? && @user_pending_comments.any? %>
+        <% @user_pending_comments.each do |comment| %>
+          <div class="mb-4">
+            <span class="text-sm font-semibold">
+              <%= comment.user.username %>:
+            </span>
+            <span class="text-sm">
+              <%= comment.content %>
+            </span>
+            <p class="text-sm text-black">
+              <%= t("status") %>
+              <span class="text-yellow-400 font-semibold">
+                <%= t("models.comment.status.#{comment.status}") %>
+              </span>
+            </p>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+

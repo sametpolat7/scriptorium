@@ -1,0 +1,41 @@
+<%= form_with(model: @article, local: true) do |form| %>
+
+  <% if @article.errors.any? %>
+    <div class="text-2xl text-red-500 text-center mb-6">
+      <h2><%= pluralize(@article.errors.count, "error") %> prohibited this article from being saved:</h2>
+      <ul>
+        <% @article.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="flex flex-col justify-center items-center">
+    <div class="w-full">
+      <%= form.text_field :title, placeholder: t("title"), class: "w-2/3 block mx-auto mb-4" %>
+    </div>
+
+    <div class="w-full">
+      <%= form.rich_text_area :content, placeholder: t("content"), class: "w-2/3 h-80 block mx-auto mb-4" %>
+    </div>
+
+    <div class="mb-8">
+      <%= form.select :published, [[t("draft"), false], [t("published"), true]] %>
+    </div>
+
+    <div class="w-full">
+      <%= form.text_field :tags, value: @article.tags.map(&:name).join(', '), placeholder: t("form_tags"), class: "w-2/3 block mx-auto mb-4" %>
+    </div>
+
+    <div class="flex justify-evenly items-center w-1/4 mt-8">
+      <div class="actions">
+        <%= form.submit form.object.new_record? ? t("create") : t("update"), class: "px-8 py-1 bg-green-500 text-white rounded hover:bg-green-600 cursor-pointer" %>
+      </div>
+      <div>
+        <%= link_to t("cancel"), articles_path, class: "px-8 py-1 bg-red-500 text-white rounded hover:bg-red-600 cursor-pointer" %>
+      </div>
+    </div>
+    
+  </div>
+<% end %>

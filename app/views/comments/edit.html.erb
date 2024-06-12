@@ -1,0 +1,28 @@
+<div class="min-h-screen flex justify-center items-start mt-12">
+  <div class="w-1/2 p-12">
+    <h2 class="text-4xl font-semibold text-center mb-12">
+      <%= t("edit_comment") %>
+    </h2>
+
+    <%= form_with(model: [@comment.user, @comment], url: user_comment_path(@comment.user.username, @comment), local: true) do |form| %>
+      <% if @comment.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(@comment.errors.count, "error") %> prohibited this comment from being saved:</h2>
+          <ul>
+            <% @comment.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <div class="mb-4">
+        <%= form.text_area :content, rows: 5, class: "form-input mt-1 block w-full" %>
+      </div>
+
+      <div class="flex justify-end">
+        <%= form.submit t("update"), class: "px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 cursor-pointer" %>
+      </div>
+    <% end %>
+  </div>
+</div>

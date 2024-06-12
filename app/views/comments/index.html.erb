@@ -1,0 +1,105 @@
+<div class="min-h-screen flex justify-center mt-12">
+
+  <div class="w-1/2">
+    <h2 class="text-center text-2xl font-semibold mb-8">
+      <%= t("pending_comments") %>
+    </h2>
+    <% @articles_w_pending_comments.each do |article| %>
+      <div class="mr-8 mt-6 mb-8 border p-4">
+
+        <div class="flex items-center mb-4">
+          <span>
+            <%= image_tag("avatar.png", size: "20x20", :alt => "avatar") %>
+          </span>
+          <span class="text-sm font-semibold ml-2">
+            <%= link_to article.user.username, user_path(article.user.username) %>
+          </span>
+        </div>
+
+        <h2 class="text-base font-bold mb-2 hover:text-blue-900">
+          <%= link_to article.title, article_path(article) %>
+        </h2>
+        <% article.comments.each do |comment| %>
+          <div>
+            <span class="text-sm font-bold ps-4">
+              <%= comment.user.username %>:
+            </span>
+            <span>
+              <%= comment.content %>
+            </span>
+          </div>
+
+          <div class="text-gray-500 text-sm ps-4">
+            <%= time_ago_in_words(comment.created_at) + t("ago")%>
+          </div>
+
+          <div class="flex justify-evenly mt-6 mb-8 font-medium">
+            <%= button_to t("approve"), approve_user_comment_path(comment.user.username, comment.id), method: :patch, class: "text-green-500 px-4 rounded-full"
+            %>
+            <%= button_to t("reject"), reject_user_comment_path(comment.user.username, comment.id), method: :patch, class: "text-red-600 px-4 rounded-full"
+            %>
+          </div>
+
+        <% end %>
+
+      </div>
+    <% end %>
+  </div>
+
+  <div class="border min-h-screen"></div>
+
+  <div class="w-1/2">
+    <h2 class="text-center text-2xl font-semibold mb-8">
+      <%= t("comments_posted_by_me") %>
+    </h2>
+    <% @user_comments.each do |comment| %>
+      <div class="ml-8 mt-6 mb-8 border p-4">
+
+        <div class="flex items-center mb-4">
+          <span>
+            <%= image_tag("avatar.png", size: "20x20", :alt => "avatar") %>
+          </span>
+          <span class="text-sm font-semibold ml-2">
+            <%= link_to comment.article.user.username,
+              user_path(comment.article.user.username)
+            %>
+          </span>
+        </div>
+
+        <div>
+          <h2 class="text-base font-bold mb-2 hover:text-blue-900">
+            <%= link_to comment.article.title, article_path(comment.article) %>
+          </h2>
+          <p>
+            <span class="text-sm font-bold ps-4"><%= comment.user.username %>:</span>
+            <%= comment.content %>
+          </p>
+        </div>
+
+        <div class="flex justify-between items-center ps-4">
+          <div class="text-gray-500 text-sm">
+            <%= time_ago_in_words(comment.created_at) + t("ago")%>
+          </div>
+          <div>
+            Status:
+            <span class="<%= comment_status_class(comment.status) %> font-medium">
+            <%= t("models.comment.status.#{comment.status}") %>
+            </span>
+          </div>
+        </div>
+
+        <div class="flex justify-around items-center mt-8">
+          <% if current_user == comment.user && comment.status != "approved" %>
+            <%= link_to t("edit"), edit_user_comment_path(comment.user.username, comment.id), class: "text-blue-900 font-semibold" %>
+          <% end %>
+
+          <% if (current_user == comment.user && comment.status != "approved") ||current_user == comment.article.user %>
+            <%= button_to t("delete"),
+              user_comment_path(comment.user.username, comment.id), method: :delete, class: "text-red-500 font-semibold" %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+</div>

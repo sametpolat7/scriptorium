@@ -1,0 +1,155 @@
+<div class="min-h-screen">
+
+  <div>
+    <%= image_tag("header.jpg", :alt => "profile_header", class: "header-pic") %>
+  </div>
+
+  <div
+    class="absolute top-64 left-1/2 transform -translate-x-1/2 w-2/3 h-72 bg-white     rounded-3xl" style="box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);">
+    <div class="absolute -top-20 left-1/2 transform -translate-x-1/2">
+      <%= image_tag("avatar.png", size: "144x144",
+        :alt => "profile_pic", class: "bg-gray-50 rounded-full p-4")
+      %>
+    </div>
+    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-20 w-11/12 h-2/3">
+      <p class="font-bold text-2xl text-center mt-2">@<%= @user.username %></p>
+      <% if current_user == @user %>
+        <div class="flex justify-between p-2 -mt-8 mb-4 font-medium">
+          <div>
+            <span class="relative">
+              <%= link_to t("my_comments"), user_comments_path(@user.username),
+                class: "border-2 border-blue-900 py-2 px-4 ml-2 hover:border-blue-700 hover:text-blue-900"
+              %>
+              <% if @pending_comments.any? %>
+                <span class="badge"></span>
+              <% end %>
+            </span>
+          </div>
+          <div class="border-blue-900">
+            <span class="relative">
+              <%= link_to t("my_drafts"), my_drafts_user_path,
+                class: "border-2 border-blue-900 py-2 px-4 hover:border-blue-700 hover:text-blue-900"
+              %>
+              <% if @unpublished_articles.any? %>
+                <span class="badge"></span>
+              <% end %>
+            </span>
+          </div>
+        </div>
+      <% end %>
+      <div class="flex justify-center p-2">
+        <p class="text-gray-600 text-base italic mt-2 w-1/2 ml-4">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, incididunt ut labore et aliqua.
+        </p>
+      </div>
+      <div class="flex justify-between items-center p-2 mt-8">
+        <p>
+          <span class="font-bold">
+            <%= t("location") %>
+          </span>
+          <span>
+            <%= t("turkey") %>
+          </span>
+          <span class="font-bold ml-8">
+            <%= t("joined_on") %>
+          </span>
+          <span>
+            <%= @user.created_at.strftime("%d/%m/%Y") %>
+          </span>
+        </p>
+        <div>
+          <%= link_to "https://www.linkedin.com/in/#{@user.username}/", target: "_blank", rel: "noopener noreferrer" do %>
+            <%= image_tag "linkedin.svg", alt: "LinkedIn", class: "inline-block w-6 h-6 mr-4" %>
+          <% end %>
+          <%= link_to "https://github.com/#{@user.username}", target: "_blank", rel: "noopener noreferrer" do %>
+            <%= image_tag "github.svg", alt: "GitHub", class: "inline-block w-6 h-6" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="w-1/2 mx-auto mt-72">
+    <% if @published_articles.empty? %>
+      <p class="text-xl font-medium">
+        <%= t("no_articles") %>
+      </p>
+    <% else %>
+      <% @last_five_articles.each do |article| %>
+        <div class="p-4 mb-8 border rounded-lg">
+          <h2 class="text-xl font-semibold hover:text-blue-900">
+            <%= link_to article.title, article_path(article) %>
+          </h2>
+          <p class="text-gray-500 text-sm mt-2">
+            <%=t("posted") + ":" + " " + time_ago_in_words(article.created_at) + " " + t("ago") %>
+          </p>
+          <ul class="font-medium mt-4">
+              <% article.tags.each do |tag| %>
+                <li class="inline-block text-blue-900 hover:text-blue-500">
+                  <%= link_to "##{tag.name}", search_path(query: tag.name), class: "text-blue-900 hover:text-blue-500"
+                  %>
+                </li>
+              <% end %>
+          </ul>
+          <div class="flex justify-between mt-4 text-sm font-medium">
+            <div class="flex items-center">
+              <%= image_tag "like.svg", alt: "Like_Button" %>
+              <span class="ml-1 text-sm font-medium mr-4">
+                <%= pluralize(article.like_count, t("like")) %>
+              </span>
+              <%= image_tag "comment.svg", alt: "Comment_Button" %>
+              <span class="ml-1 text-sm font-medium">
+                <%= pluralize(article.comments.select { |comment| comment.status == 'approved' }.length, t("comment"))
+                %>
+              </span>
+            </div>
+            <div class="flex">
+              <span>
+                <%= image_tag("avatar.png", size: "20x20", :alt => "avatar") %>
+              </span>
+              <span class="text-sm font-semibold ml-2">
+                <%= article.user.username %>
+              </span>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+
+  <div class="mx-auto w-1/6 mt-16">
+    <%= link_to t("see_all"), articles_all_user_path,
+      class: "text-2xl font-bold border-2 border-blue-950 px-4 py-2 text-blue-950 text-center hover:border-blue-700 hover:text-blue-700"
+    %>
+  </div>
+
+  <div class="mt-24">
+    <h2 class="text-3xl font-medium mb-4">
+      <%= t("latest_actions") %>
+    </h2>
+    <% if @last_actions.empty? %>
+      <p class="text-base p-4 font-medium">
+        <%= t("no_actions") %>
+      </p>
+    <% else %>
+      <% @last_actions.each do |action| %>
+        <div class="w-1/2 border p-4 rounded-lg mb-4">
+          <h2 class="font-bold">
+            <%= t("commented_on") %>
+            <span class="italic text-sm font-medium hover:text-blue-900">"
+              <%= link_to action.article.title, article_path(action.article) %>"
+            </span>
+          </h2>
+          <p class="text-sm mt-2">
+            <span class="font-semibold"><%= action.user.username %>:</span>
+            <span><%= action.content %></span>
+          </p>
+          <p class="text-gray-500 text-sm">
+            <%= time_ago_in_words(action.created_at) + " " + t("ago") %> 
+          </p>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+
+</div>

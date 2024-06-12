@@ -1,0 +1,24 @@
+published_article:
+  title: "Published Article"
+  content: "This is a published article."
+  published: true
+
+unpublished_article:
+  title: "Unpublished Article"
+  content: "This is an unpublished article."
+  published: false
+
+ruby_article:
+  title: "Ruby on Rails"
+  content: "An article about Ruby on Rails."
+  published: true
+
+rails_article:
+  title: "Rails Tutorial"
+  content: "An article about Rails."
+  published: true
+
+javascript_article:
+  title: "JavaScript Basics"
+  content: "An article about JavaScript."
+  published: true
