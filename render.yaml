@@ -1,6 +1,6 @@
 databases:
   - name: scriptorium-database
-    databaseName: scriptorium-database
+    databaseName: scriptorium
     user: sametpolat7
     plan: free
 
