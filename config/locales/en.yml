@@ -51,6 +51,7 @@ en:
   slogan: '"Where words rise and ideas shine."'
   recent_articles: "Recent Published Articles"
   discover_page_title: "You may be interested in..."
+  sign_in: "Sign in with"
   models:
     comment:
       status:

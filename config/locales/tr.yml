@@ -51,6 +51,7 @@ tr:
   slogan: '"Kelimelerin yükseldiği ve fikirlerin parladığı yer."'
   recent_articles: "Son paylaşılan makaleler"
   discover_page_title: "İlginizi çekebilir..."
+  sign_in: "Oturum açın / "
   models:
     comment:
       status:
